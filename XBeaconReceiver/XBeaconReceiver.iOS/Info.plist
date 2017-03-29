@@ -54,5 +54,14 @@
 	</array>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>for hogehoge BLE.</string>
+	
+	<!-- needed for background monitoring or foreground ranging -->
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>ENTER YOUR REASON FOR LOCATION TRACKING</string>
+	
+	<!-- if you don't need background monotoring, use this -->
+	<key>NSLocationWhenInUseDescription</key>
+	<string>ENTER YOUR REASON FOR LOCATION TRACKING</string>
+	
 </dict>
 </plist>
