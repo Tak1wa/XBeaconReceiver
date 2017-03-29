@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Estimotes;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,34 +14,49 @@ namespace XBeaconReceiver.Models.Services
         public static iBeaconScannerService Instance { get; private set; } = new iBeaconScannerService();
         private iBeaconScannerService()
         {
-            Plugin.BluetoothLE.CrossBleAdapter.Current.WhenStatusChanged().Subscribe(status =>
+            EstimoteManager.Instance.Initialize().ContinueWith(x =>
             {
-                if (status != Plugin.BluetoothLE.AdapterStatus.PoweredOn)
+                System.Diagnostics.Debug.WriteLine($"Beacon Init Status: {x.Result}");
+                if (x.Result != BeaconInitStatus.Success)
                     return;
 
-                Plugin.BluetoothLE.CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
+                EstimoteManager.Instance.RegionStatusChanged += (sender, beaconArgs) =>
                 {
-                    if (scanResult.AdvertisementData.ManufacturerData.IsiBeaconAdvertisingPacket())
+                    return;
+                };
+                EstimoteManager.Instance.Ranged += (sender, beacons) =>
+                {
+                    if (beacons == null)
+                        return;
+                    
+                    foreach(var beacon in beacons)
                     {
-                        var iBeaconPacket = scanResult.AdvertisementData.ManufacturerData.ToiBeaconAdvertisingPacket();
+                        var packet = new iBeaconAdvertisingPacket
+                        {
+                            Uuid = beacon.Uuid,
+                            Major = beacon.Major,
+                            Minor = beacon.Minor,
+                        };
                         var existPacket = ScanningPackets.FirstOrDefault(item =>
                         {
-                            return item.Uuid == iBeaconPacket.Uuid &&
-                                   item.Major == iBeaconPacket.Major &&
-                                   item.Minor == iBeaconPacket.Minor;
+                            return item.Uuid == packet.Uuid &&
+                                    item.Major == packet.Major &&
+                                    item.Minor == packet.Minor;
                         });
-                        if (existPacket == null)
+                        if(existPacket == null)
                         {
-                            iBeaconPacket.TxPower = scanResult.AdvertisementData.TxPower;
-                            ScanningPackets.Add(iBeaconPacket);
-                        }
-                        else
-                        {
-                            existPacket.TxPower = scanResult.AdvertisementData.TxPower;
-                            existPacket.LastScanDateTime = iBeaconPacket.LastScanDateTime;
+                            ScanningPackets.Add(packet);
                         }
                     }
-                });
+                };
+
+                EstimoteManager.Instance.StopAllMonitoring();
+                EstimoteManager.Instance.StopAllRanging();
+
+                //Sample UUID.
+                var region = new BeaconRegion("hogeIdentifier", "c58925a9-d178-44a9-8e5e-b717e6ede88b");
+                EstimoteManager.Instance.StartMonitoring(region);
+                EstimoteManager.Instance.StartRanging(region);
             });
         }
         
