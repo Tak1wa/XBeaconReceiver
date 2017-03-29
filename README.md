@@ -19,3 +19,5 @@ using Plugin : [ACR Bluetooth LE Reactive Plugin for Xamarin](https://www.nuget.
 - Major
 - Minor
 - Power etc...
+
+Since iOS can not acquire advertisement packets unless you use the CoreLocation API, you can not get advertisement packets in this repository.
