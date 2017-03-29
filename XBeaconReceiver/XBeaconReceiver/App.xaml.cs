@@ -13,7 +13,7 @@ namespace XBeaconReceiver
         {
             InitializeComponent();
 
-            MainPage = new XBeaconReceiver.MainPage();
+            MainPage = new XBeaconReceiver.Views.iBeaconListPage();
         }
 
         protected override void OnStart()

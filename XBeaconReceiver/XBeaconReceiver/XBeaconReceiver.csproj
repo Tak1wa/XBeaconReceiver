@@ -41,16 +41,17 @@
     <Compile Include="DetailPage.xaml.cs">
       <DependentUpon>DetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Models\iBeaconAdvertisingPacket.cs" />
+    <Compile Include="Models\iBeaconAdvertisingPacketConverter.cs" />
+    <Compile Include="Models\Services\iBeaconScannerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\iBeaconAdvertisingPacketViewModel.cs" />
+    <Compile Include="ViewModels\iBeaconListViewModel.cs" />
+    <Compile Include="Views\iBeaconListPage.xaml.cs">
+      <DependentUpon>iBeaconListPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -62,6 +63,12 @@
     </Reference>
     <Reference Include="Plugin.BluetoothLE.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Plugin.BluetoothLE.2.0.0\lib\portable-win+net45+wp8+win8+wpa81\Plugin.BluetoothLE.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Prism.Core.6.3.0\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveProperty, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ReactiveProperty.2.9.0\lib\portable-net45+WP8+win8+wpa81+MonoTouch+MonoAndroid\ReactiveProperty.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Rx-Core.2.2.5\lib\portable-net45+winrt45+wp8+wpa81\System.Reactive.Core.dll</HintPath>
@@ -90,6 +97,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\iBeaconListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
